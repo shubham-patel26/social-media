@@ -1,7 +1,7 @@
 create database social_media;
 use social_media;
 
-create table user_info (reg_no varchar(11) PRIMARY KEY NOT NULL, email varchar(30) UNIQUE,name varchar(256), password varchar(256),intro varchar(64),facebook_link VARCHAR(40), linkedin_link VARCHAR(40));
+create table user_info (reg_no varchar(11) PRIMARY KEY NOT NULL, email_id varchar(30) UNIQUE NOT NULL,name varchar(256), password varchar(256),intro varchar(64),facebook_link VARCHAR(40) UNIQUE, linkedin_link VARCHAR(40) UNIQUE);
 
 CREATE TABLE posts(post_id INT AUTO_INCREMENT PRIMARY KEY,reg_no VARCHAR(9) NOT NULL, heading VARCHAR(128) NOT NULL,body VARCHAR(1000) NOT NULL,posted_on DATETIME, upvotes INT);
 

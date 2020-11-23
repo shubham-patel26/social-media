@@ -9,7 +9,7 @@ var flash = require('connect-flash');
 var path = require('path');
 var cors = require('cors');
 const db=require('./Database/pool');
-
+const userRouter = require('./Routes/users');
 
 const hostname='localhost';
 const port=3000;
@@ -25,6 +25,7 @@ app.use(express.static(__dirname+'/public'));
 app.use(bodyParser.json());
 app.use(flash());
 
+app.use('/users',userRouter);
 
 
 
