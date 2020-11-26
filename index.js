@@ -27,6 +27,23 @@ app.use(flash());
 
 app.use('/users',userRouter);
 
+const newpostRouter = require('./Routes/newpost');
+app.use(newpostRouter);
+
+const feedRouter = require('./Routes/feed');
+app.use(feedRouter);
+
+const showpostRouter = require('./Routes/showpost');
+app.use(showpostRouter.router);
+
+const upvoteRouter = require('./Routes/upvote');
+app.use(upvoteRouter);
+
+const addcommentRouter = require('./Routes/addcomment');
+app.use(addcommentRouter);
+
+const profileRouter = require('./Routes/profile');
+app.use(profileRouter);
 
 
 app.use((req,res,next)=>{

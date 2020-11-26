@@ -8,6 +8,7 @@ var authenticate = require('../authenticate');
 
 router.use(bodyParser.json());
 
+// req.user.reg_no;      to get the reg_no of loggedin user
 
 /* GET user list. */
 router.get('/',authenticate.verifyUser,(req,res,next)=>{
