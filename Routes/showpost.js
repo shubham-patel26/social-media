@@ -8,22 +8,40 @@ var authenticate = require('../authenticate');
 router.use(express.json());
 router.use(express.urlencoded({extended:true}));
 
-// shows the full post with comments
+// shows the full post
 router.get('/showpost/:id', authenticate.verifyUser,async(req,res)=>{
     try{
         const postId = req.params.id;
         const userRegno = req.user.reg_no;
         const post = await getPostDetails(postId,userRegno);
-        const comments = await getComments(postId);
-        if(post instanceof(Error) || comments instanceof(Error)){
+        
+        if(post instanceof(Error)){
             res.sendStatus(404);
             return;
         }
-        res.json(post);  // send comments along with posts;
+        res.json(post);
     }
     catch(err){
         console.log(err);
         res.status(404);
+    }
+})
+
+
+// get comments of postid = id
+router.get('/comment/:id',authenticate.verifyUser, async(req,res)=>{
+    try{
+        const postId = req.params.id;
+        const comments = await getComments(postId);
+        if(comments instanceof(Error)){
+            res.sendStatus(404);
+            return;
+        }
+        res.json(comments);
+    }
+    catch(err){
+        console.log(err);
+        res.sendStatus(404);
     }
 })
 
