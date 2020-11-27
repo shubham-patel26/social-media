@@ -11,12 +11,22 @@ router.use(express.urlencoded({extended:true}));
 
 
 router.get('/collegemates/:year/:branch',authenticate.verifyUser,async(req,res)=>{
-    const year = req.params.year;
-    const branch = req.params.branch;
+    try{
+        const year = req.params.year;
+        const branch = req.params.branch;
 
-    const query = "SELECT * FROM user_info WHERE reg_no LIKE '" + year +"__" + branch + "___'";
-    const collegemates = await db.getQuery(query);
-    res.send(collegemates);
+        const query = "SELECT * FROM user_info WHERE reg_no LIKE '" + year +"__" + branch + "___'";
+        const collegemates = await db.getQuery(query);
+        
+        if(collegemates instanceof(Error)){
+            console.log(collegemates);
+            res.sendStatus(404);
+        }
+        res.send(collegemates);
+    }
+    catch(err){
+        res.sendStatus(404);
+    }
 })
 
 module.exports = router;
