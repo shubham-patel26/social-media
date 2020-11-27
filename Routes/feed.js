@@ -13,7 +13,7 @@ router.use(express.urlencoded({extended:true}));
 const limit = 3; // number of rows to show per page
 
 // redirect to feed API as soon as user logs in.
-router.get('/feed',authenticate.verifyUser,(req,res)=>{
+router.get('/feed',authenticate.verifyUser,async(req,res)=>{
     console.log(req.query);
 
     var sortBy = 'posted_on', page = 1, order = 'desc'; // Base case
@@ -21,13 +21,18 @@ router.get('/feed',authenticate.verifyUser,(req,res)=>{
     if(req.query.page)  page = req.query.page;
     if(req.query.order)  order = req.query.order;
 
-    const query = "SELECT * FROM posts ORDER BY " + sortBy +" "+ order +" LIMIT " + (page-1)*limit + ", "+limit;
-
     // Database query to fetch 10 posts based on req.query
-    pool.query(query, (err,results)=>{
-        if(err) res.status(404).send(err.message);
-        res.send(results);
-    })
+    const query1 = "SELECT * FROM posts ORDER BY " + sortBy +" "+ order +" LIMIT " + (page-1)*limit + ", "+limit;
+    const posts = await db.getQuery(query1);
+
+    // Database query to fetch distinct tags
+    const query2 = "SELECT DISTINCT tag_name FROM tags";
+    const tags = await db.getQuery(query2);
+
+    if(posts instanceof(Error) || tags instanceof(Error))
+        res.sendStatus(404);
+    
+    res.send(posts);    //send tags along with posts...
 })
 
 //  API when filter is only on branch

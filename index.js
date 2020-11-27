@@ -45,6 +45,12 @@ app.use(addcommentRouter);
 const profileRouter = require('./Routes/profile');
 app.use(profileRouter);
 
+const collegematesRouter = require('./Routes/collegemates');
+app.use(collegematesRouter);
+
+const tagRouter = require('./Routes/tag');
+app.use(tagRouter);
+
 
 app.use((req,res,next)=>{
     console.log(req.headers);
