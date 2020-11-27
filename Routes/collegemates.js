@@ -6,6 +6,9 @@ const pool = require('../Database/pool');
 var bCrypt = require('bcrypt');
 var authenticate = require('../authenticate');
 
+router.use(express.json());
+router.use(express.urlencoded({extended:true}));
+
 
 router.get('/collegemates/:year/:branch',authenticate.verifyUser,async(req,res)=>{
     const year = req.params.year;
