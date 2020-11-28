@@ -10,11 +10,16 @@ router.use(express.json());
 router.use(express.urlencoded({extended:true}));
 
 // post the newpost 
-router.post("/newpost",authenticate.verifyUser,(req,res)=>{
+router.post("/newpost",authenticate.verifyUser, async(req,res)=>{
     const userRegId = req.user.reg_no;
     const heading = req.body.heading;
     const body = req.body.body;
     const tags=req.body.tags;
+    
+    // changes all elements to lowercase...
+    for(var i=0;i<tags.length;i++){
+        tags[i] = tags[i].replace(/\s+/g, '-').toLowerCase();
+    }
 
     const insertPostQuery = "INSERT INTO posts(reg_no,heading,body,posted_on,upvotes) VALUES ('" +userRegId+ "' , '" +heading+ "' , '" +body+ "', NOW(), 0);";
     pool.query(insertPostQuery, (err,results)=>{
