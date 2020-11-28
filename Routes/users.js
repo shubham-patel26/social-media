@@ -67,7 +67,7 @@ router.post('/signup',(req,res,next)=>{
                 .then(user=>{
                      res.statusCode= 200;
                      res.setHeader('Content-Type','application/json');
-                     res.json({status: 'success', message: 'you have been registered successfully'});
+                     res.json({success: 'true', message: 'you have been registered successfully'});
                 })
                 .catch(err=>next(err));
          }
@@ -107,7 +107,7 @@ router.post('/login', (req, res,next) => {
                          console.log(token);
                          res.statusCode = 200;
                          res.setHeader('Content-Type', 'application/json');
-                         res.json({success: true, token: token, status: 'You are successfully logged in!'});
+                         res.json({success: true, token: token,name: user[0].name, status: 'You are successfully logged in!'});
                     }
                }
                comparePassword(req.body.password,user[0].password);
