@@ -10,10 +10,18 @@ router.use(express.urlencoded({extended:true}));
 
 
 router.get('/tag',authenticate.verifyUser,async(req,res)=>{
-    const query = "SELECT * FROM tags";
-    const tags = await db.getQuery(query);
-
-    res.send(tags);
+    try{
+        const query = "SELECT * FROM tags";
+        const tags = await db.getQuery(query);
+        if(tags instanceof(Error)){
+            console.log(tags);
+            res.sendStatus(404);
+        }
+        res.send(tags);
+    }
+    catch(err){
+        res.sendStatus(404);
+    }
 })
 
 
