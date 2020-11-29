@@ -45,6 +45,12 @@ app.use(addcommentRouter);
 const profileRouter = require('./Routes/profile');
 app.use(profileRouter);
 
+const collegematesRouter = require('./Routes/collegemates');
+app.use(collegematesRouter);
+
+const tagRouter = require('./Routes/tag');
+app.use(tagRouter);
+
 
 app.use((req,res,next)=>{
     console.log(req.headers);
@@ -54,7 +60,6 @@ app.use((req,res,next)=>{
     res.end('<html><body><h1>This is an express server</h1></body></html>');
 
 });
-
 
 const server=http.createServer(app);
 
