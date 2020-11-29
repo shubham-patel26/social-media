@@ -11,6 +11,7 @@ router.use(express.urlencoded({extended:true}));
 
 // post the newpost 
 router.post("/newpost",authenticate.verifyUser,(req,res)=>{
+    console.log(req.body);
     const userRegId = req.user.reg_no;
     const heading = req.body.heading;
     const body = req.body.body;
@@ -18,13 +19,18 @@ router.post("/newpost",authenticate.verifyUser,(req,res)=>{
 
     const insertPostQuery = "INSERT INTO posts(reg_no,heading,body,posted_on,upvotes) VALUES ('" +userRegId+ "' , '" +heading+ "' , '" +body+ "', NOW(), 0);";
     pool.query(insertPostQuery, (err,results)=>{
-        if(err) res.status(404).send(err.message);
+        if(err) res.status(404);
         console.log("Post inserted in database.");
         
         const getPostId = "SELECT MAX(post_id) AS max FROM posts";
         
         pool.query(getPostId,(err2,id)=>{
-            if(err2) res.status(404).send(err2.message);
+            if(err2) 
+            {
+                console.log(err2);
+                res.status(404);
+                
+            }
             const postId = id[0].max;
 
             linkPostToTags(postId,tags,res);
@@ -36,13 +42,14 @@ router.post("/newpost",authenticate.verifyUser,(req,res)=>{
 
 async function linkPostToTags(postId,tags){
     try{
+        console.log('here');
         for(var i=0;i<tags.length;i++)
             await linkPostToTag(postId,tags[i]);
         return 1;
     }
     catch(err){
-        res.status(404).send("error..");
-        return err;
+        res.status(404);
+        
     }
 }
 
@@ -64,7 +71,7 @@ async function linkPostToTag(postId,tagName){
     }
     catch(err){
         console.log(err.message);
-        return err;
+        
     }
 }
 
