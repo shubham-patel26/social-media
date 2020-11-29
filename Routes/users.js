@@ -107,7 +107,7 @@ router.post('/login', (req, res,next) => {
                          console.log(token);
                          res.statusCode = 200;
                          res.setHeader('Content-Type', 'application/json');
-                         res.json({success: true, token: token, status: 'You are successfully logged in!'});
+                         res.json({success: true, token: token,name:user[0].name, status: 'You are successfully logged in!'});
                     }
                }
                comparePassword(req.body.password,user[0].password);
