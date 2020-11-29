@@ -12,7 +12,7 @@ const db=require('./Database/pool');
 const userRouter = require('./Routes/users');
 
 const hostname='localhost';
-const port=3000;
+const port=3444;
 
 var config=require('./config');
 
@@ -60,7 +60,6 @@ app.use((req,res,next)=>{
     res.end('<html><body><h1>This is an express server</h1></body></html>');
 
 });
-
 
 const server=http.createServer(app);
 
