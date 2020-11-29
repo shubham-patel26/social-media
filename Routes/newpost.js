@@ -10,12 +10,7 @@ router.use(express.json());
 router.use(express.urlencoded({extended:true}));
 
 // post the newpost 
-<<<<<<< HEAD
-router.post("/newpost",authenticate.verifyUser,(req,res)=>{
-    console.log(req.body);
-=======
 router.post("/newpost",authenticate.verifyUser, async(req,res)=>{
->>>>>>> 38523c5b97264c10a6feb1851796550fec04c16a
     const userRegId = req.user.reg_no;
     const heading = req.body.heading;
     const body = req.body.body;
@@ -28,30 +23,18 @@ router.post("/newpost",authenticate.verifyUser, async(req,res)=>{
 
     const insertPostQuery = "INSERT INTO posts(reg_no,heading,body,posted_on,upvotes) VALUES ('" +userRegId+ "' , '" +heading+ "' , '" +body+ "', NOW(), 0);";
     pool.query(insertPostQuery, (err,results)=>{
-<<<<<<< HEAD
-        if(err) res.status(404);
-=======
         if(err){
             res.status(404).send(err.message);
             return;
         }
->>>>>>> 38523c5b97264c10a6feb1851796550fec04c16a
         console.log("Post inserted in database.");
         
         const getPostId = "SELECT MAX(post_id) AS max FROM posts";
         
         pool.query(getPostId,(err2,id)=>{
-<<<<<<< HEAD
-            if(err2) 
-            {
-                console.log(err2);
-                res.status(404);
-                
-=======
             if(err2){
                 res.status(404).send(err2.message);
                 return;
->>>>>>> 38523c5b97264c10a6feb1851796550fec04c16a
             }
             const postId = id[0].max;
 
@@ -68,18 +51,12 @@ router.post("/newpost",authenticate.verifyUser, async(req,res)=>{
 
 async function linkPostToTags(postId,tags){
     try{
-        console.log('here');
         for(var i=0;i<tags.length;i++)
             await linkPostToTag(postId,tags[i]);
         return 1;
     }
     catch(err){
-<<<<<<< HEAD
-        res.status(404);
-        
-=======
         return err;
->>>>>>> 38523c5b97264c10a6feb1851796550fec04c16a
     }
 }
 
@@ -102,7 +79,7 @@ async function linkPostToTag(postId,tagName){
     }
     catch(err){
         console.log(err.message);
-        
+        return err;
     }
 }
 
