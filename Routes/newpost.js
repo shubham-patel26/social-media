@@ -15,7 +15,7 @@ router.post("/newpost",authenticate.verifyUser, async(req,res)=>{
     const heading = req.body.heading;
     const body = req.body.body;
     const tags=req.body.tags;
-    
+    console.log(req.body);
     // changes all elements to lowercase...
     for(var i=0;i<tags.length;i++){
         tags[i] = tags[i].replace(/\s+/g, '-').toLowerCase();
@@ -43,7 +43,7 @@ router.post("/newpost",authenticate.verifyUser, async(req,res)=>{
                 res.sendStatus(404);
                 return;
             }
-            res.send("post added successfully!");
+            res.json({message:"post added successfully!", success:true});
         })
     });
 })

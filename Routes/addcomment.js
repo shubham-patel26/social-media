@@ -19,10 +19,10 @@ router.post('/addcomment/:id',authenticate.verifyUser,async(req,res)=>{
         const addcomment = "INSERT INTO comments(post_id,reg_no,comment,comment_time) VALUES (" +postId+ ",'" +userRegno+ "','" +newComment+ "',NOW())";
         const query1 = await db.getQuery(addcomment);
         const comment = await showpost.getComments(postId);
-        if(query1 instanceof(Error) || comment instanceof(Error)){
-            res.sendStatus(404);
-            return;
-        }
+        // if(query1 instanceof(Error) || comment instanceof(Error)){
+        //     res.sendStatus(404);
+        //     return;
+        // }
         res.json(comment);
     }
     catch(err){
