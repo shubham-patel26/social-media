@@ -12,7 +12,7 @@ router.use(bodyParser.json());
 
 /* GET user list. */
 router.get('/',authenticate.verifyUser,(req,res,next)=>{
-    console.log(req.user);
+    console.log(req.user); 
     var sql = `SELECT * from user_info`;
 
     db.query(sql,[])
@@ -24,7 +24,18 @@ router.get('/',authenticate.verifyUser,(req,res,next)=>{
     .catch(err=>next(err));
 })
 //Middleware
-
+router.get('/getuser',authenticate.verifyUser,(req,res,next)=>{
+     console.log('here');
+     console.log(req.user);
+     var sql = `SELECT * from user_info WHERE reg_no='${req.user.reg_no}'`;
+     db.query(sql,[])
+     .then(user=>{
+          res.statusCode=200;
+         res.contentType('Content-Type', 'application/json');
+         res.json(user);
+     })
+     .catch(err=>next(err));
+})
 router.post('/signup',(req,res,next)=>{
     var sql = `SELECT email_id from user_info where email_id ='${req.body.email_id}'`;
 

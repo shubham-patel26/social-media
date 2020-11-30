@@ -18,9 +18,9 @@ exports.verifyUser = (req,res,next)=>{
                 res.json('invalid token');
             }
             else{
-                // console.log(authData);
+                console.log(authData);
                 req.user=authData;
-                console.log(req.user.reg_no);
+                // console.log(req.user.reg_no);
                 next();
             }
         })
