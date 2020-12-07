@@ -60,18 +60,20 @@ router.post('/signup',(req,res,next)=>{
                     email_id: req.body.email_id,
                     password : pass,  // use the generateHash function in our user model
                     name: req.body.name,
+                    intro: req.body.intro,
                     facebook_link: req.body.facebook,
                     linkedin_link: req.body.linkedin
 
                 };
 
-                var insertQuery = "INSERT INTO user_info ( reg_no,email_id, password,name,facebook_link,linkedin_link ) values (?,?,?,?,?,?)";
+                var insertQuery = "INSERT INTO user_info ( reg_no,email_id, password,name,intro,facebook_link,linkedin_link ) values (?,?,?,?,?,?,?)";
             
                 db.query(insertQuery,
                     [   newUserMysql.reg_no,
                         newUserMysql.email_id, 
                         newUserMysql.password,
                         newUserMysql.name,
+                        newUserMysql.intro,
                         newUserMysql.facebook_link,
                         newUserMysql.linkedin_link
                     ])
