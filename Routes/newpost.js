@@ -19,6 +19,7 @@ router.post("/newpost",authenticate.verifyUser, async(req,res)=>{
     // changes all elements to lowercase...
     for(var i=0;i<tags.length;i++){
         tags[i] = tags[i].replace(/\s+/g, '-').toLowerCase();
+        console.log(tags[i]);
     }
 
     const insertPostQuery = "INSERT INTO posts(reg_no,heading,body,posted_on,upvotes) VALUES ('" +userRegId+ "' , '" +heading+ "' , '" +body+ "', NOW(), 0);";
@@ -43,7 +44,9 @@ router.post("/newpost",authenticate.verifyUser, async(req,res)=>{
                 res.sendStatus(404);
                 return;
             }
-            res.send("post added successfully!");
+            const tagsToSend = db.getQuery("SELECT * FROM tags");
+
+            res.json({message:"post added successfully!", success:true,tagsToSend});
         })
     });
 })
