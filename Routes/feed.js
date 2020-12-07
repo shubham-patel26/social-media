@@ -10,7 +10,7 @@ var authenticate = require('../authenticate');
 router.use(express.json());
 router.use(express.urlencoded({extended:true}));
 
-const limit = 3; // number of rows to show per page
+const limit = 10; // number of rows to show per page
 
 // redirect to feed API as soon as user logs in.
 router.get('/feed',authenticate.verifyUser,async(req,res)=>{
@@ -63,7 +63,10 @@ router.get('/feed/tag/:tag',authenticate.verifyUser,(req,res)=>{
 
     const query = "SELECT posts.post_id,reg_no,heading,body,posted_on,upvotes FROM posts,post_tag WHERE posts.post_id = post_tag.post_id AND post_tag.tag_id=" + tagId +" ORDER BY " +sortBy+ " " + order + " LIMIT " + (page-1)*limit + ", "+limit;
     pool.query(query,(err,results)=>{
-        if(err) res.status(404).send(err.message);
+        if(err){
+            res.status(404).send(err.message);
+            return;
+        }
         res.send(results);
     })
 })

@@ -61,6 +61,11 @@ app.use((req,res,next)=>{
 
 });
 
+app.get('/aboutus',async(req,res)=>{
+    console.log("hello");
+    res.render('./views/aboutus/aboutus-admin.ejs');
+})
+
 const server=http.createServer(app);
 
 server.listen(port,hostname,()=>{

@@ -4,6 +4,7 @@ const app = express();
 const db = require('../Database/getQuery');
 const pool = require('../Database/pool');
 var authenticate = require('../authenticate');
+const ejs = require("ejs");
 
 router.use(express.json());
 router.use(express.urlencoded({extended:true}));
@@ -24,5 +25,10 @@ router.get('/tag',async(req,res)=>{
     }
 })
 
+router.get('/aboutus',(req,res)=>{
+    console.log("hello");
+    res.render('../views/aboutus/aboutus-admin.ejs');
+
+})
 
 module.exports = router;
