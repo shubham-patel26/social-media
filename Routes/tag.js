@@ -9,7 +9,7 @@ router.use(express.json());
 router.use(express.urlencoded({extended:true}));
 
 
-router.get('/tag',authenticate.verifyUser,async(req,res)=>{
+router.get('/tag',async(req,res)=>{
     try{
         const query = "SELECT * FROM tags";
         const tags = await db.getQuery(query);
