@@ -11,6 +11,7 @@ router.use(express.urlencoded({extended:true}));
 
 // post the newpost 
 router.post("/newpost",authenticate.verifyUser, async(req,res)=>{
+    console.log(req.body);
     const userRegId = req.user.reg_no;
     const heading = req.body.heading;
     const body = req.body.body;

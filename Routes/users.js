@@ -13,7 +13,7 @@ router.use(bodyParser.json());
 
 /* GET user list. */
 router.get('/',authenticate.verifyUser,(req,res,next)=>{
-    console.log(req.user);
+    console.log(req.user); 
     var sql = `SELECT * from user_info`;
 
     db.query(sql,[])
@@ -25,7 +25,18 @@ router.get('/',authenticate.verifyUser,(req,res,next)=>{
     .catch(err=>next(err));
 })
 //Middleware
-
+router.get('/getuser',authenticate.verifyUser,(req,res,next)=>{
+     console.log('here');
+     console.log(req.user);
+     var sql = `SELECT * from user_info WHERE reg_no='${req.user.reg_no}'`;
+     db.query(sql,[])
+     .then(user=>{
+          res.statusCode=200;
+         res.contentType('Content-Type', 'application/json');
+         res.json(user);
+     })
+     .catch(err=>next(err));
+})
 router.post('/signup',(req,res,next)=>{
     var sql = `SELECT email_id from user_info where email_id ='${req.body.email_id}'`;
 
@@ -50,25 +61,27 @@ router.post('/signup',(req,res,next)=>{
                     email_id: req.body.email_id,
                     password : pass,  // use the generateHash function in our user model
                     name: req.body.name,
+                    intro: req.body.intro,
                     facebook_link: req.body.facebook,
                     linkedin_link: req.body.linkedin
 
                 };
 
-                var insertQuery = "INSERT INTO user_info ( reg_no,email_id, password,name,facebook_link,linkedin_link ) values (?,?,?,?,?,?)";
+                var insertQuery = "INSERT INTO user_info ( reg_no,email_id, password,name,intro,facebook_link,linkedin_link ) values (?,?,?,?,?,?,?)";
             
                 db.query(insertQuery,
                     [   newUserMysql.reg_no,
                         newUserMysql.email_id, 
                         newUserMysql.password,
                         newUserMysql.name,
+                        newUserMysql.intro,
                         newUserMysql.facebook_link,
                         newUserMysql.linkedin_link
                     ])
                 .then(user=>{
                      res.statusCode= 200;
                      res.setHeader('Content-Type','application/json');
-                     res.json({status: 'success', message: 'you have been registered successfully'});
+                     res.json({success: 'true', message: 'you have been registered successfully'});
                 })
                 .catch(err=>next(err));
          }
@@ -108,7 +121,7 @@ router.post('/login', (req, res,next) => {
                          console.log(token);
                          res.statusCode = 200;
                          res.setHeader('Content-Type', 'application/json');
-                         res.json({success: true, token: token,name: user[0].name, status: 'You are successfully logged in!'});
+                         res.json({success: true, token: token,name:user[0].name, status: 'You are successfully logged in!'});
                     }
                }
                comparePassword(req.body.password,user[0].password);
