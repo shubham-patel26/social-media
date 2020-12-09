@@ -14,21 +14,13 @@ router.get('/tag',async(req,res)=>{
     try{
         const query = "SELECT * FROM tags";
         const tags = await db.getQuery(query);
-        if(tags instanceof(Error)){
-            console.log(tags);
-            res.sendStatus(404);
-        }
         res.send(tags);
     }
     catch(err){
+        console.log(err);
         res.sendStatus(404);
     }
 })
 
-router.get('/aboutus',(req,res)=>{
-    console.log("hello");
-    res.render('../views/aboutus/aboutus-admin.ejs');
-
-})
 
 module.exports = router;
