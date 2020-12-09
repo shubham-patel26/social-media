@@ -3,6 +3,7 @@ var router = express.Router();
 var bodyParser=require('body-parser');
 var bCrypt = require('bcrypt');
 var db=require('../Database/pool');
+const database = require('../Database/getQuery');
 
 var authenticate = require('../authenticate');
 
@@ -135,7 +136,20 @@ router.post('/login', (req, res,next) => {
   
 // });
 
+router.get('/search/:name',authenticate.verifyUser, async(req,res)=>{
+     try{
+          const limit = 10; // number of search results to show
+          const name = req.params.name;
+          const sqlQuery = "SELECT * FROM user_info WHERE name LIKE '%"+name+"%' LIMIT "+limit;
 
+          const searchResult = await database.getQuery(sqlQuery);
+          res.send(searchResult);
+     }
+     catch(err){
+          console.log(err);
+          res.sendStatus(404);
+     }
+})
 
 
 module.exports = router;
