@@ -30,6 +30,9 @@ app.use('/users',userRouter);
 const newpostRouter = require('./Routes/newpost');
 app.use(newpostRouter);
 
+const messageRouter = require('./Routes/messages');
+app.use(messageRouter);
+
 const feedRouter = require('./Routes/feed');
 app.use(feedRouter);
 

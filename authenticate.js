@@ -8,17 +8,18 @@ exports.getToken = function(user) {
 
 exports.verifyUser = (req,res,next)=>{
     const bearerHeader = req.headers['authorization'];
+    console.log(bearerHeader);
     if(typeof bearerHeader !== 'undefined'){
         const bearer = bearerHeader.split(' ');
         const bearerToken = bearer[1];
         // console.log(bearerToken);
       jwt.verify(bearerToken,config.secretKey,(err,authData)=>{
             if(err){
-                res.sendStatus(403);
+                res.statusCode=401;
                 res.json('invalid token');
             }
             else{
-                console.log(authData);
+                // console.log(authData);
                 req.user=authData;
                 // console.log(req.user.reg_no);
                 next();
