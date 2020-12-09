@@ -30,6 +30,9 @@ app.use('/users',userRouter);
 const newpostRouter = require('./Routes/newpost');
 app.use(newpostRouter);
 
+const messageRouter = require('./Routes/messages');
+app.use(messageRouter);
+
 const feedRouter = require('./Routes/feed');
 app.use(feedRouter);
 
@@ -60,6 +63,7 @@ app.use((req,res,next)=>{
     res.end('<html><body><h1>This is an express server</h1></body></html>');
 
 });
+
 
 const server=http.createServer(app);
 
