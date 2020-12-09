@@ -14,9 +14,11 @@ router.get('/showpost/:id', authenticate.verifyUser,async(req,res)=>{
         const userRegno = req.user.reg_no;
         const post = await getPostDetails(postId,userRegno);
         
-        const authorRegno = post.reg_no;
+        const authorRegno = post.regNo;
         const getAuthorsDetails = "SELECT * FROM user_info WHERE reg_no = '"+authorRegno+ "'";
+        
         const authorDetails = await db.getQuery(getAuthorsDetails);
+        console.log(authorDetails)
         res.send({post,authorDetails});
     }
     catch(err){

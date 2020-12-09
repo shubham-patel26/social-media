@@ -12,22 +12,23 @@ router.use(bodyParser.json());
 // req.user.reg_no;      to get the reg_no of loggedin user
 
 /* GET user list. */
-router.get('/',authenticate.verifyUser,(req,res,next)=>{
-    console.log(req.user); 
-    var sql = `SELECT * from user_info`;
-
-    db.query(sql,[])
-    .then(userlist=> {
-         res.statusCode=200;
+router.get('/getuserdetails/:reg_no',authenticate.verifyUser,(req,res,next)=>{
+     console.log(req.params.reg_no);
+     
+     var sql = `SELECT * from user_info WHERE reg_no='${req.params.reg_no}'`;
+     db.query(sql,[])
+     .then(user=>{
+          console.log(user[0]);
+          res.statusCode=200;
          res.contentType('Content-Type', 'application/json');
-         res.json(userlist);
-    })
-    .catch(err=>next(err));
+         res.json(user[0]);
+     })
+     .catch(err=>next(err));
 })
 //Middleware
 router.get('/getuser',authenticate.verifyUser,(req,res,next)=>{
      console.log('here');
-     console.log(req.user);
+     // console.log(req.user);
      var sql = `SELECT * from user_info WHERE reg_no='${req.user.reg_no}'`;
      db.query(sql,[])
      .then(user=>{
@@ -121,7 +122,7 @@ router.post('/login', (req, res,next) => {
                          console.log(token);
                          res.statusCode = 200;
                          res.setHeader('Content-Type', 'application/json');
-                         res.json({success: true, token: token,name:user[0].name, status: 'You are successfully logged in!'});
+                         res.json({success: true, token: token,user:user[0], status: 'You are successfully logged in!'});
                     }
                }
                comparePassword(req.body.password,user[0].password);
