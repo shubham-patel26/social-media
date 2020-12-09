@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const db = require('../Database/getQuery');
 const pool = require('../Database/pool');
-var bCrypt = require('bcrypt');
 var authenticate = require('../authenticate');
 
 router.use(express.json());
@@ -15,11 +14,10 @@ router.get('/showpost/:id', authenticate.verifyUser,async(req,res)=>{
         const userRegno = req.user.reg_no;
         const post = await getPostDetails(postId,userRegno);
         
-        if(post instanceof(Error)){
-            res.sendStatus(404);
-            return;
-        }
-        res.json(post);
+        const authorRegno = post.reg_no;
+        const getAuthorsDetails = "SELECT * FROM user_info WHERE reg_no = '"+authorRegno+ "'";
+        const authorDetails = await db.getQuery(getAuthorsDetails);
+        res.send({post,authorDetails});
     }
     catch(err){
         console.log(err);
@@ -33,10 +31,7 @@ router.get('/comment/:id',authenticate.verifyUser, async(req,res)=>{
     try{
         const postId = req.params.id;
         const comments = await getComments(postId);
-        if(comments instanceof(Error)){
-            res.sendStatus(404);
-            return;
-        }
+    
         res.json(comments);
     }
     catch(err){
@@ -49,6 +44,7 @@ async function getPostDetails(postId,userRegno){
     try{
         let post={
             'postId' : postId,
+            'regNo' : "",
             'heading' : "",
             'body' : "",
             'upvotes' : 0,
@@ -57,6 +53,7 @@ async function getPostDetails(postId,userRegno){
         }
         const query1 = "SELECT * FROM posts WHERE post_id = " + postId;
         const results1 = await db.getQuery(query1);
+        post.regNo = results1[0].reg_no;
         post.heading = results1[0].heading;
         post.body = results1[0].body;
         post.postedOn = results1[0].posted_on;
