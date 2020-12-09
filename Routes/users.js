@@ -136,6 +136,19 @@ router.post('/login', (req, res,next) => {
   
 // });
 
+router.get('/search/',async(req,res)=>{
+     try{
+          const sqlQuery = "SELECT * FROM user_info LIMIT 10";
+          const searchResult = await database.getQuery(sqlQuery);
+
+          res.send(searchResult);
+     }
+     catch(err){
+          console.log(err);
+          res.sendStatus(404);
+     }
+})
+
 router.get('/search/:name',authenticate.verifyUser, async(req,res)=>{
      try{
           const limit = 10; // number of search results to show
