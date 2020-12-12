@@ -13,12 +13,12 @@ router.use(bodyParser.json());
 
 /* GET user list. */
 router.get('/getuserdetails/:reg_no',authenticate.verifyUser,(req,res,next)=>{
-     console.log(req.params.reg_no);
+     // console.log(req.params.reg_no);
      
      var sql = `SELECT * from user_info WHERE reg_no='${req.params.reg_no}'`;
      db.query(sql,[])
      .then(user=>{
-          console.log(user[0]);
+          // console.log(user[0]);
           res.statusCode=200;
          res.contentType('Content-Type', 'application/json');
          res.json(user[0]);
@@ -67,6 +67,7 @@ router.post('/signup',(req,res,next)=>{
                     linkedin_link: req.body.linkedin
 
                 };
+                console.log(newUserMysql);
 
                 var insertQuery = "INSERT INTO user_info ( reg_no,email_id, password,name,intro,facebook_link,linkedin_link ) values (?,?,?,?,?,?,?)";
             
@@ -135,20 +136,11 @@ router.post('/login', (req, res,next) => {
 });
 
 
-// router.get('/logout', function(req, res) {
-// //   if(req.session)
-// //   {
-// //     req.session.destroy();
-// //     res.clearCookie('session-id');
-// //     res.redirect('/');
-// //   }
-// //   else{
-// //     var err=new Error('You are not logged in');
-// //     err.status=403;
-// //     next(err);
-// //   }
+router.get('/logout', function(req, res) {
+     res.statusCode=200;
+     res.send('/home');
   
-// });
+});
 
 router.get('/search/',async(req,res)=>{
      try{

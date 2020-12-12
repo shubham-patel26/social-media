@@ -35,6 +35,17 @@ router.get('/feed',authenticate.verifyUser,async(req,res)=>{
     }
 })
 
+router.get('/feed/user/:userId' , authenticate.verifyUser , (req,res,next)=>{
+    var sql = `SELECT heading,posted_on,post_id from posts WHERE reg_no='${req.params.userId}'`;
+    db.getQuery(sql,[])
+    .then(posts=>{
+        console.log('the')
+        res.statusCode=200;
+        res.json(posts);
+    })
+    .catch(err=>console.log(err));
+})
+
 //  API when filter is only on branch
 router.get('/feed/branch/:branch',authenticate.verifyUser,async(req,res)=>{
     try{
