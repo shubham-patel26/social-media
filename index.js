@@ -12,7 +12,7 @@ const db=require('./Database/pool');
 const userRouter = require('./Routes/users');
 
 const hostname='localhost';
-const port=3444;
+const port=process.env.PORT ||3444;
 
 var config=require('./config');
 
